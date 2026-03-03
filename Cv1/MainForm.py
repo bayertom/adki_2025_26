@@ -106,7 +106,7 @@ class Ui_MainForm(object):
         
         
     def clearClick():
-        pass
+        pass 
 
 
     def retranslateUi(self, MainForm):
