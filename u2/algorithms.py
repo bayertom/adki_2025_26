@@ -1,14 +1,14 @@
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
+from math import *
 
 class Algorithms:
     
     def __init__(self):
         pass
     
-  
-    def get2VectorsAngle(self, p1:QPointF, p2:QPointF, p3:QPointF, p4:QPointF):
+     def get2VectorsAngle(self, p1:QPointF, p2:QPointF, p3:QPointF, p4:QPointF):
         #Angle between two vectors
         ux = p2.x() - p1.x()
         uy = p2.y() - p1.y()

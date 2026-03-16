@@ -1,32 +1,39 @@
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
-from math import *
 
 class Algorithms:
     
     def __init__(self):
         pass
     
-    def get2LinesAngle(self, p1, p2, p3, p4):
-        #Calculates the angle between two lines
+  
+    def analyzePointAndPolygonRC(self,q,pol):
+        """ Analyze point and polygon position using Ray Crossing Algorithm """
+        k = 0            # number of intrescts
+        n = len(pol)     # polygon vertices count
         
-        #Vector u
-        ux = p2.x() - p1.x()
-        uy = p2.y() - p1.y()
-        
-        #Vector v
-        vx = p4.x() - p3.x()
-        vy = p4.y() - p3.y()
-        
-        #Dot product
-        dot = ux * vx + uy * vy
+        # Process all points
+        for i in range(n):
+            #Calculate x and y differences
+            xi_red = pol[i].x() - q.x()
+            yi_red = pol[i].y() - q.y()
+            
+            xii_red = pol[(i+1) % n].x() - q.x()
+            yii_red = pol[(i+1) % n].y() - q.y()
+            
+            #Appropriate segment
+            if ((yii_red > 0) and (yi_red <= 0)) or ((yi_red > 0) and (yii_red <= 0)):
+                # Compute segment and ray intersection
+                x_m = (xii_red * yi_red - xi_red * yii_red) / (yii_red - yi_red)
                 
-        #Norms
-        norm_u = sqrt(ux**2 + uy**2)
-        norm_v = sqrt(vx**2 + vy**2)
+                #Increment amount of intersections
+                if x_m > 0:
+                    k=k+1
         
-        #Compute phi
-        phi = acos(dot / (norm_u * norm_v))
+        #Point q inside pol
+        if (k % 2 == 1):
+            return True
         
-        return phi
+        #Point q outside pol
+        return False

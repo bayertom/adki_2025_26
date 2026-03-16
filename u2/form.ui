@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1043</width>
-    <height>948</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Analyze point and polygon positiom</string>
+   <string>Simplify buildings</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -25,7 +25,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1043</width>
+     <width>800</width>
      <height>33</height>
     </rect>
    </property>
@@ -33,28 +33,31 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="separator"/>
     <addaction name="actionOpen"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
-   <widget class="QMenu" name="menuInput">
+   <widget class="QMenu" name="menuSimplify">
     <property name="title">
-     <string>Input</string>
+     <string>Simplify</string>
     </property>
-    <addaction name="actionPoint_polygon"/>
-    <addaction name="separator"/>
-    <addaction name="actionClear"/>
+    <addaction name="actionMin_Bounding_Rectangle"/>
+    <addaction name="actionPCAS"/>
+    <addaction name="actionLongest_Edge"/>
+    <addaction name="actionWall_Average"/>
+    <addaction name="actionWeighted_bisector"/>
    </widget>
-   <widget class="QMenu" name="menuAnalyze">
+   <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>Analyze</string>
+     <string>View</string>
     </property>
-    <addaction name="actionRay_Crossing"/>
-    <addaction name="actionWinding_Number"/>
+    <addaction name="actionClear_results"/>
+    <addaction name="actionClear_all"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuInput"/>
-   <addaction name="menuAnalyze"/>
+   <addaction name="menuSimplify"/>
+   <addaction name="menuView"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -69,25 +72,16 @@
    </attribute>
    <addaction name="actionOpen"/>
    <addaction name="separator"/>
-   <addaction name="actionRay_Crossing"/>
-   <addaction name="actionWinding_Number"/>
+   <addaction name="actionMin_Bounding_Rectangle"/>
+   <addaction name="actionPCAS"/>
+   <addaction name="actionLongest_Edge"/>
+   <addaction name="actionWall_Average"/>
+   <addaction name="actionWeighted_bisector"/>
    <addaction name="separator"/>
-   <addaction name="actionPoint_polygon"/>
+   <addaction name="actionClear_results"/>
+   <addaction name="actionClear_all"/>
    <addaction name="separator"/>
-   <addaction name="actionClear"/>
   </widget>
-  <action name="actionOpen">
-   <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/images/icons/open_file.png</normaloff>:/images/icons/open_file.png</iconset>
-   </property>
-   <property name="text">
-    <string>Open</string>
-   </property>
-   <property name="toolTip">
-    <string>Open file</string>
-   </property>
-  </action>
   <action name="actionExit">
    <property name="icon">
     <iconset resource="icons.qrc">
@@ -100,55 +94,97 @@
     <string>Close application</string>
    </property>
   </action>
-  <action name="actionPoint_polygon">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
+  <action name="actionMin_Bounding_Rectangle">
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/images/icons/pointpol.png</normaloff>:/images/icons/pointpol.png</iconset>
+     <normaloff>:/images/icons/maer.png</normaloff>:/images/icons/maer.png</iconset>
    </property>
    <property name="text">
-    <string>Point / polygon</string>
+    <string>Min. Bounding Rectangle</string>
    </property>
    <property name="toolTip">
-    <string>Switch point / polygon input</string>
+    <string>Simplify building using minimum bounding rectangle</string>
    </property>
   </action>
-  <action name="actionClear">
+  <action name="actionPCAS">
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/images/icons/clear.png</normaloff>:/images/icons/clear.png</iconset>
+     <normaloff>:/images/icons/pca.png</normaloff>:/images/icons/pca.png</iconset>
    </property>
    <property name="text">
-    <string>Clear</string>
+    <string>PCA</string>
    </property>
    <property name="toolTip">
-    <string>Clear data</string>
+    <string>Simplify building using PCA</string>
    </property>
   </action>
-  <action name="actionRay_Crossing">
+  <action name="actionClear_results">
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/images/icons/ray.png</normaloff>:/images/icons/ray.png</iconset>
+     <normaloff>:/images/icons/clear_ch.png</normaloff>:/images/icons/clear_ch.png</iconset>
    </property>
    <property name="text">
-    <string>Ray Crossing</string>
-   </property>
-   <property name="toolTip">
-    <string>Analyze point and polygon position using Ray Crossing algorithm</string>
+    <string>Clear results</string>
    </property>
   </action>
-  <action name="actionWinding_Number">
+  <action name="actionClear_all">
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/images/icons/winding.png</normaloff>:/images/icons/winding.png</iconset>
+     <normaloff>:/images/icons/clear_er.png</normaloff>:/images/icons/clear_er.png</iconset>
    </property>
    <property name="text">
-    <string>Winding Number</string>
+    <string>Clear all</string>
    </property>
    <property name="toolTip">
-    <string>Analyze point and polygon position using Winding Number algorithm</string>
+    <string>Clear all data</string>
+   </property>
+  </action>
+  <action name="actionLongest_Edge">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/icons/longestedge.png</normaloff>:/images/icons/longestedge.png</iconset>
+   </property>
+   <property name="text">
+    <string>Longest Edge</string>
+   </property>
+   <property name="toolTip">
+    <string>Simplify building using PCA longest edge</string>
+   </property>
+  </action>
+  <action name="actionWall_Average">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/icons/wa.png</normaloff>:/images/icons/wa.png</iconset>
+   </property>
+   <property name="text">
+    <string>Wall Average</string>
+   </property>
+   <property name="toolTip">
+    <string>Simplify building using wall average</string>
+   </property>
+  </action>
+  <action name="actionWeighted_bisector">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/icons/weightedbisector.png</normaloff>:/images/icons/weightedbisector.png</iconset>
+   </property>
+   <property name="text">
+    <string>Weighted Bisector</string>
+   </property>
+   <property name="toolTip">
+    <string>Simplify building using weighted bisector</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/icons/open_file.png</normaloff>:/images/icons/open_file.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Open file</string>
    </property>
   </action>
  </widget>
