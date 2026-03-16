@@ -66,4 +66,17 @@ class Draw(QWidget):
         self.__add_vertex = not(self.__add_vertex)
         
         
+    def clearCanvas(self):
+        #Clears the canvas
+        self.__pol.clear()
+
+        self.repaint()
         
+    def getPoint(self):
+        #Get analyzed point
+        return self.__q
+    
+    def getPolygon(self):
+        #Get polygon 
+        return self.__pol
+    
