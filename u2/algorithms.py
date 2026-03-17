@@ -8,7 +8,7 @@ class Algorithms:
     def __init__(self):
         pass
     
-     def get2VectorsAngle(self, p1:QPointF, p2:QPointF, p3:QPointF, p4:QPointF):
+    def get2VectorsAngle(self, p1:QPointF, p2:QPointF, p3:QPointF, p4:QPointF):
         #Angle between two vectors
         ux = p2.x() - p1.x()
         uy = p2.y() - p1.y()
@@ -122,3 +122,68 @@ class Algorithms:
             pol_rot.append(vertex)
 
         return pol_rot
+    
+    def createMBR(self, pol: QPolygonF):
+        #Create minimum bounding rectangle for a given polygon
+        n = len(pol)
+        
+        #Create convex hull
+        ch = self.createCH(pol)
+
+        #Initialize variables
+        mmb_min, area_min = self.createMMB(pol)
+    
+        #Process all edges of convex Hull
+        sigma_min = 0
+        for i in range(n):
+            #Edge endpoints
+            p1 = ch[i]
+            p2 = ch[(i+1) % n]
+
+            #Coordinate differences
+            dx = p2.x() - p1.x()
+            dy = p2.y() - p1.y()
+
+            #Direction
+            sigma = atan2(dy, dx)
+
+            #Rotate convex hull
+            ch_rot = self.rotatePolygon(ch, -sigma)
+            
+            #Calculate minMaxBox
+            mmb, area = self.createMMB(ch_rot)
+            
+            #Update minimum
+            if area < area_min:
+                area_min = area
+                mmb_min = mmb
+                sigma_min = sigma
+
+        return self.rotate(mmb_min, sigma_min)
+    
+    def getPolygonArea(self, pol: QPolygonF):
+        #Calculate polygon area  using LH formula
+        area = 0
+        n = len(pol)
+
+        #Process all edges
+        for i in range(1, n):
+            area += pol[i].x() * (pol[(i+1)%n].y() - pol[(i-1+n)%n].y())
+        
+        return abs(area)/2
+    
+    def resizeRectangle(self, rect: QPolygonF, build: QPolygonF):
+        #Resize MAER to have a similar area as a rectangle
+        
+        #Area of the rectangle
+        rect_area = self.getPolygonArea(rect)
+        
+        #Area of the building
+        build_area = self.getPolygonArea(build)
+        
+        #Area ratio
+        k = build_area / rect_area
+        
+        #Compute rectangle centroid
+        x_c = (rect[0].x() + rect[1].x() + rect[2].x() + rect[3].x()) / 4
+        y_c = (rect[0].y() + rect[1].y() + rect[2].y() + rect[3].y()) / 4
