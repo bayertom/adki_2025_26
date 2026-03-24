@@ -122,6 +122,7 @@ class Algorithms:
             pol_rot.append(vertex)
 
         return pol_rot
+
     
     def createMBR(self, pol: QPolygonF):
         #Create minimum bounding rectangle for a given polygon
@@ -160,6 +161,7 @@ class Algorithms:
                 sigma_min = sigma
 
         return self.rotate(mmb_min, sigma_min)
+
     
     def getPolygonArea(self, pol: QPolygonF):
         #Calculate polygon area  using LH formula
@@ -171,6 +173,7 @@ class Algorithms:
             area += pol[i].x() * (pol[(i+1)%n].y() - pol[(i-1+n)%n].y())
         
         return abs(area)/2
+
     
     def resizeRectangle(self, rect: QPolygonF, build: QPolygonF):
         #Resize MAER to have a similar area as a rectangle
@@ -187,3 +190,37 @@ class Algorithms:
         #Compute rectangle centroid
         x_c = (rect[0].x() + rect[1].x() + rect[2].x() + rect[3].x()) / 4
         y_c = (rect[0].y() + rect[1].y() + rect[2].y() + rect[3].y()) / 4
+
+	        #Vectors
+        u1_x = er[0].x() - x_t
+        u2_x = er[1].x() - x_t
+        u3_x = er[2].x() - x_t
+        u4_x = er[3].x() - x_t
+        u1_y = er[0].y() - y_t
+        u2_y = er[1].y() - y_t
+        u3_y = er[2].y() - y_t
+        u4_y = er[3].y() - y_t
+
+        #Coordinates of new vertices
+        v1_x = x_t + sqrt(k) * u1_x
+        v1_y = y_t + sqrt(k) * u1_y
+
+        v2_x = x_t + sqrt(k) * u2_x
+        v2_y = y_t + sqrt(k) * u2_y
+
+        v3_x = x_t + sqrt(k) * u3_x
+        v3_y = y_t + sqrt(k) * u3_y
+
+        v4_x = x_t + sqrt(k) * u4_x
+        v4_y = y_t + sqrt(k) * u4_y
+
+        #Create new vertices
+        v1 = QPointF(v1_x, v1_y)
+        v2 = QPointF(v2_x, v2_y)
+        v3 = QPointF(v3_x, v3_y)
+        v4 = QPointF(v4_x, v4_y)
+
+        #Create rectangle
+        er_r = QPolygonF([v1, v2, v3, v4])
+
+        return er_r
