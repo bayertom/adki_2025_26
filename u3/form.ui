@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>MainForm</class>
+ <widget class="QMainWindow" name="MainForm">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1111</width>
-    <height>1015</height>
+    <width>1755</width>
+    <height>1327</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>DTM Analysis</string>
+   <string>Building simplify</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -25,8 +25,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1111</width>
-     <height>26</height>
+     <width>1755</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -37,44 +37,23 @@
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
-   <widget class="QMenu" name="menuAnalysis">
+   <widget class="QMenu" name="menuSimplify">
     <property name="title">
-     <string>Analysis</string>
+     <string>Simplify</string>
     </property>
-    <addaction name="actionCreate_DT"/>
-    <addaction name="separator"/>
-    <addaction name="actionCreateContouLines"/>
-    <addaction name="actionAnalyzeSlope"/>
-    <addaction name="actionAnalyzeExposition"/>
+    <addaction name="actionMBR"/>
+    <addaction name="actionPCA"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
     </property>
-    <addaction name="actionDT"/>
-    <addaction name="actionContour_lines_2"/>
-    <addaction name="actionSlope"/>
-    <addaction name="actionExposition"/>
-   </widget>
-   <widget class="QMenu" name="menuClear">
-    <property name="title">
-     <string>Clear</string>
-    </property>
     <addaction name="actionClear_results"/>
-    <addaction name="separator"/>
     <addaction name="actionClear_all"/>
    </widget>
-   <widget class="QMenu" name="menuSettings">
-    <property name="title">
-     <string>Settings</string>
-    </property>
-    <addaction name="actionParameters"/>
-   </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuAnalysis"/>
+   <addaction name="menuSimplify"/>
    <addaction name="menuView"/>
-   <addaction name="menuClear"/>
-   <addaction name="menuSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -89,23 +68,18 @@
    </attribute>
    <addaction name="actionOpen"/>
    <addaction name="separator"/>
-   <addaction name="actionCreate_DT"/>
-   <addaction name="separator"/>
-   <addaction name="actionCreateContouLines"/>
-   <addaction name="actionAnalyzeSlope"/>
-   <addaction name="actionAnalyzeExposition"/>
+   <addaction name="actionMBR"/>
+   <addaction name="actionPCA"/>
    <addaction name="separator"/>
    <addaction name="actionClear_results"/>
    <addaction name="actionClear_all"/>
-   <addaction name="separator"/>
-   <addaction name="actionParameters"/>
    <addaction name="separator"/>
    <addaction name="actionExit"/>
   </widget>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="image.qrc">
-     <normaloff>:/images/icons/open_file.png</normaloff>:/images/icons/open_file.png</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/open_file.png</normaloff>:/images/images/icons/open_file.png</iconset>
    </property>
    <property name="text">
     <string>Open</string>
@@ -116,100 +90,44 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="image.qrc">
-     <normaloff>:/images/icons/exit.png</normaloff>:/images/icons/exit.png</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/exit.png</normaloff>:/images/images/icons/exit.png</iconset>
    </property>
    <property name="text">
     <string>Exit</string>
    </property>
    <property name="toolTip">
-    <string>Exit application</string>
-   </property>
-   <property name="shortcut">
-    <string>Backspace</string>
+    <string>Close application</string>
    </property>
   </action>
-  <action name="actionCreate_DT">
+  <action name="actionMBR">
    <property name="icon">
-    <iconset resource="image.qrc">
-     <normaloff>:/images/icons/triangles2.png</normaloff>:/images/icons/triangles2.png</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/maer.png</normaloff>:/images/images/icons/maer.png</iconset>
    </property>
    <property name="text">
-    <string>Create DT</string>
+    <string>MBR</string>
    </property>
    <property name="toolTip">
-    <string>Create Delaunay triangulation</string>
+    <string>Simplify building using MBR</string>
    </property>
   </action>
-  <action name="actionCreateContouLines">
+  <action name="actionPCA">
    <property name="icon">
-    <iconset resource="image.qrc">
-     <normaloff>:/images/icons/contours2.png</normaloff>:/images/icons/contours2.png</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/pca.png</normaloff>:/images/images/icons/pca.png</iconset>
    </property>
    <property name="text">
-    <string>Create contour lines</string>
-   </property>
-  </action>
-  <action name="actionAnalyzeSlope">
-   <property name="icon">
-    <iconset resource="image.qrc">
-     <normaloff>:/images/icons/slope2.png</normaloff>:/images/icons/slope2.png</iconset>
-   </property>
-   <property name="text">
-    <string>Analyze slope</string>
+    <string>PCA</string>
    </property>
    <property name="toolTip">
-    <string>Analyze DTM slope</string>
-   </property>
-  </action>
-  <action name="actionAnalyzeExposition">
-   <property name="icon">
-    <iconset resource="image.qrc">
-     <normaloff>:/images/icons/orientation2.png</normaloff>:/images/icons/orientation2.png</iconset>
-   </property>
-   <property name="text">
-    <string>Analyze exposition</string>
-   </property>
-   <property name="toolTip">
-    <string>Analyze DTM exposition</string>
-   </property>
-  </action>
-  <action name="actionDT">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>DT</string>
-   </property>
-  </action>
-  <action name="actionContour_lines_2">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Contour lines</string>
-   </property>
-  </action>
-  <action name="actionSlope">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Slope</string>
-   </property>
-  </action>
-  <action name="actionExposition">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Exposition</string>
+    <string>Simplify building using PCA</string>
    </property>
   </action>
   <action name="actionClear_results">
    <property name="icon">
-    <iconset resource="image.qrc">
-     <normaloff>:/images/icons/clear.png</normaloff>:/images/icons/clear.png</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/clear.png</normaloff>:/images/images/icons/clear.png</iconset>
    </property>
    <property name="text">
     <string>Clear results</string>
@@ -217,20 +135,14 @@
   </action>
   <action name="actionClear_all">
    <property name="icon">
-    <iconset resource="image.qrc">
-     <normaloff>:/images/icons/clear_all.png</normaloff>:/images/icons/clear_all.png</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/clear_er.png</normaloff>:/images/images/icons/clear_er.png</iconset>
    </property>
    <property name="text">
     <string>Clear all</string>
    </property>
-  </action>
-  <action name="actionParameters">
-   <property name="icon">
-    <iconset resource="image.qrc">
-     <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
-   </property>
-   <property name="text">
-    <string>Parameters</string>
+   <property name="toolTip">
+    <string>Clear all data</string>
    </property>
   </action>
  </widget>
@@ -243,200 +155,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="image.qrc"/>
+  <include location="icons.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>actionOpen</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>507</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionCreate_DT</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>507</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionAnalyzeSlope</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>507</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionAnalyzeExposition</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>507</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionCreateContouLines</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>507</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionClear_results</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>507</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionClear_all</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>507</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionExit</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>507</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionDT</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>507</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionContour_lines_2</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>507</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionSlope</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>507</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionExposition</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>555</x>
-     <y>507</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
