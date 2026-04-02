@@ -6,9 +6,10 @@ class Draw(QWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.__pol = QPolygonF()
-        self.__q = QPointF(100, 100)
-        self.__add_vertex = True
+        self.__building = QPolygonF()
+        self.__ch = QPolygonF()
+        self.__building_simp = QPolygonF()
+
         
 
     def mousePressEvent(self, e):
@@ -20,7 +21,7 @@ class Draw(QWidget):
         p = QPointF(x,y)
         
         #Add P to polygon
-        self.__pol.append(p)
+        self.__building.append(p)
         
         #Repaint
         self.repaint()
@@ -37,9 +38,37 @@ class Draw(QWidget):
         qp.setPen(Qt.GlobalColor.black)
         qp.setBrush(Qt.GlobalColor.yellow)
         
-        #Draw polygon
-        qp.drawPolygon(self.__pol)
+        #Draw building
+        qp.drawPolygon(self.__building)
+        
+        #Set attributes, CH
+        qp.setPen(Qt.GlobalColor.blue)
+        qp.setBrush(Qt.GlobalColor.transparent)
+        
+        #Draw CH
+        qp.drawPolygon(self.__ch)
+        
+        #Set attributes, building_simp
+        qp.setPen(Qt.GlobalColor.red)
+        qp.setBrush(Qt.GlobalColor.transparent)
+        
+        #Draw building_simp
+        qp.drawPolygon(self.__building_simp)
         
         #End draw
         qp.end()
         
+        
+    def getBuilding(self):
+        #Returns 'private' building
+        return self.__building
+    
+    
+    def setSimplifiedBuilding(self, building):
+        #Sets the building
+        self.__building_simp = building
+    
+    
+    def setCH(self, ch):
+        #Sets the convex hull
+        self.__ch = ch
