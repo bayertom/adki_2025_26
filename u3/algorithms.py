@@ -34,6 +34,7 @@ class Algorithms:
         #On the line
         return 0
     
+    
     def findNearestPoint(self, points, p):
         #Find point neares to P
         p_nearest = None
@@ -51,6 +52,7 @@ class Algorithms:
 
             dist = sqrt(dx**2 + dy**2 + dz**2)
 
+            #Actualize minimum
             if dist < min_distance:
                 min_distance = dist
                 p_nearest = point
