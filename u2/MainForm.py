@@ -7,7 +7,6 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-from algorithms import *
 
 
 class Ui_MainForm(object):
@@ -108,46 +107,9 @@ class Ui_MainForm(object):
         self.toolBar.addAction(self.actionClear_results)
         self.toolBar.addAction(self.actionClear_all)
         self.toolBar.addSeparator()
-        
-        self.actionMin_Bounding_Rectangle.triggered.connect(self.simplifyMBRClick)
-        self.actionPCAS.triggered.connect(self.simplifyPCAClick)
 
         self.retranslateUi(MainForm)
         QtCore.QMetaObject.connectSlotsByName(MainForm)
-        
-        
-    def simplifyMBRClick(self):
-        #Simplify building using MBR
-        
-        #Get building
-        building = self.Canvas.getBuilding()        
-        
-        #Simplify
-        a = Algorithms()    
-        rec = a.simplifyBuildingMBR(building)
-        
-        #Set results
-        self.Canvas.setSimplifiedBuilding(rec)
-        
-        #Repaint
-        self.Canvas.repaint()
-        
-        
-    def simplifyPCAClick(self):
-        #Simplify building using PCA
-        
-        #Get building
-        building = self.Canvas.getBuilding()        
-        
-        #Simplify
-        a = Algorithms()    
-        rec = a.simplifyBuildingPCA(building)
-        
-        #Set results
-        self.Canvas.setSimplifiedBuilding(rec)
-        
-        #Repaint
-        self.Canvas.repaint()
 
     def retranslateUi(self, MainForm):
         _translate = QtCore.QCoreApplication.translate
