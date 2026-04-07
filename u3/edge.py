@@ -15,3 +15,6 @@ class Edge():
     
     def switchOrientation(self):
         return Edge(self.__end, self.__start)
+
+    def __eq__(self,other):
+        return (self.__start == other.__start and self.__end == other.__end)

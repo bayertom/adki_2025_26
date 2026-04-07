@@ -10,5 +10,3 @@ class QPoint3DF(QPointF):
     def z(self):
         return self.__z
     
-    def __eq__(self, other):
-        return self.x() == other.x() and self.y() == other.y()
