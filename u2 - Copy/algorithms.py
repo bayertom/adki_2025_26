@@ -1,0 +1,251 @@
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
+from math import *
+import numpy as np
+import numpy.linalg as npla
+
+class Algorithms:
+    
+    def __init__(self):
+        pass
+    
+    def get2VectorsAngle(self, p1:QPointF, p2:QPointF, p3:QPointF, p4:QPointF):
+        #Angle between two vectors
+        ux = p2.x() - p1.x()
+        uy = p2.y() - p1.y()
+        
+        vx = p4.x() - p3.x()
+        vy = p4.y() - p3.y()    
+        
+        #Dot product
+        dot = ux*vx + uy*vy
+        
+        #Norms
+        nu = (ux**2 + uy**2)**0.5
+        nv = (vx**2 + vy**2)**0.5
+        
+        #Correct interval
+        arg = dot/(nu*nv)
+        arg = max(-1, min(1,arg)) 
+        
+        return acos(arg)
+    
+    
+    def createCH(self, pol:QPolygonF):
+        #Create Convex Hull using Jarvis Scan
+        ch = QPolygonF()
+        
+        #Find pivot q (minimize y)
+        q = min(pol, key = lambda k: k.y())
+
+        #Find left-most point (minimize x)
+        s = min(pol, key = lambda k: k.x())
+        
+        #Initial segment
+        pj = q
+        pj1 = QPointF(s.x(), q.y())
+        
+        #Add to CH
+        ch.append(pj)
+        
+        # Find all points of CH
+        while True:
+            #Maximum and its index
+            omega_max = 0
+            index_max = -1
+            
+            #Browse all points
+            for i in range(len(pol)):
+                
+                #Points are different
+                if pj != pol[i]:
+                    
+                    #Compute omega
+                    omega = self.get2VectorsAngle(pj, pj1, pj, pol[i])
+            
+                    #Actualize maximum
+                    if(omega>omega_max):
+                        omega_max = omega
+                        index_max = i
+                    
+            #Add point to the convex hull
+            ch.append(pol[index_max])
+            
+            #Reasign points
+            pj1 = pj
+            pj = pol[index_max]
+            
+            # Stopping condition
+            if pj == q:
+                break
+            
+        return ch
+    
+    
+    def createMMB(self, pol:QPolygonF):
+        # Create min max box and compute its area
+
+        #Points with extreme coordinates        
+        p_xmin = min(pol, key = lambda k: k.x())
+        p_xmax = max(pol, key = lambda k: k.x())
+        p_ymin = min(pol, key = lambda k: k.y())
+        p_ymax = max(pol, key = lambda k: k.y())
+        
+        #Create vertices
+        v1 = QPointF(p_xmin.x(), p_ymin.y())
+        v2 = QPointF(p_xmax.x(), p_ymin.y())
+        v3 = QPointF(p_xmax.x(), p_ymax.y())
+        v4 = QPointF(p_xmin.x(), p_ymax.y())
+        
+        #Create new polygon
+        mmb = QPolygonF([v1, v2, v3, v4])
+        
+        #Area of MMB
+        area = (v2.x() - v1.x()) * (v3.y() - v2.y())
+        
+        return mmb, abs(area)
+    
+
+    def rotatePolygon(self, pol:QPolygonF, sig:float):
+        #Rotate polygon according to a given angle
+        pol_rot = QPolygonF()
+
+        #Process all polygon vertices
+        for i in range(len(pol)):
+
+            #Rotate point
+            x_rot = pol[i].x() * cos(sig) - pol[i].y() * sin(sig)
+            y_rot = pol[i].x() * sin(sig) + pol[i].y() * cos(sig)
+
+            #Create QPoint
+            vertex = QPointF(x_rot, y_rot)
+
+            # Add vertex to rotated polygon
+            pol_rot.append(vertex)
+
+        return pol_rot
+    
+    
+    def createMBR(self, pol: QPolygonF):
+        #Create minimum bounding rectangle for a given polygon
+        n = len(pol)
+        
+        #Create convex hull
+        ch = self.createCH(pol)
+
+        #Initialize variables
+        mmb_min, area_min = self.createMMB(pol)
+    
+        #Process all edges of convex Hull
+        sigma_min = 0
+        for i in range(n):
+            #Edge endpoints
+            p1 = ch[i]
+            p2 = ch[(i+1) % n]
+
+            #Coordinate differences
+            dx = p2.x() - p1.x()
+            dy = p2.y() - p1.y()
+
+            #Direction
+            sigma = atan2(dy, dx)
+
+            #Rotate convex hull
+            ch_rot = self.rotatePolygon(ch, -sigma)
+            
+            #Calculate minMaxBox
+            mmb, area = self.createMMB(ch_rot)
+            
+            #Update minimum
+            if area < area_min:
+                area_min = area
+                mmb_min = mmb
+                sigma_min = sigma
+
+        return self.rotatePolygon(mmb_min, sigma_min)
+    
+    
+    def getPolygonArea(self, pol: QPolygonF):
+        #Calculate polygon area  using LH formula
+        area = 0
+        n = len(pol)
+
+        #Process all edges
+        for i in range(n):
+            area += pol[i].x() * (pol[(i+1)%n].y() - pol[(i-1+n)%n].y())
+        
+        return abs(area)/2
+    
+    
+    def resizeRectangle(self, rect: QPolygonF, build: QPolygonF):
+        #Resize MAER to have a similar area as a rectangle
+        
+        #Area of the rectangle
+        rect_area = self.getPolygonArea(rect)
+        
+        #Area of the building
+        build_area = self.getPolygonArea(build)
+        
+        #Area ratio
+        k = ( build_area / rect_area)
+        
+        #Compute rectangle centroid
+        x_c = (rect[0].x() + rect[1].x() + rect[2].x() + rect[3].x()) / 4
+        y_c = (rect[0].y() + rect[1].y() + rect[2].y() + rect[3].y()) / 4
+        
+        #Resized polygon
+        res_rect = QPolygonF()
+
+        for i in range(4):
+            res_rect.append(QPointF((rect[i].x() - x_c)*sqrt(k) + x_c, (rect[i].y() - y_c)*sqrt(k) + y_c))
+        
+        return res_rect
+
+
+    def simplifyBuildingMBR(self, building: QPolygonF):
+        # Simplify building minimum bounding rectangle
+    
+        #Create MBR
+        mbr = self.createMBR(building)
+        
+        #Resize MBR
+        res_mbr = self.resizeRectangle(mbr, building)
+        
+        return res_mbr
+    
+    
+    def simplifyBuildingPCA(self, building):
+        #Simplify building using Principal Components Analysis
+        x, y = [], []
+        
+        #Convert points to coordinates
+        for b in building:
+            x.append(b.x())
+            y.append(b.y())
+            
+        #Create matrix
+        A = np.array([x, y])
+        
+        #Covariance matrix
+        C = np.cov(A)
+        
+        #Singlar value decomposition
+        [U, S, V] = npla.svd(C)
+        
+        #Compute rotation
+        sigma = atan2(V[0][1], V[0][0])
+        
+        #Rotate building
+        building_rot = self.rotatePolygon(building, -sigma)
+
+        #Compute min-max box 
+        mmb, area = self.createMMB(building_rot)
+        
+        #Resize MMB
+        res_mmb = self.resizeRectangle(mmb, building)
+        
+        #Rotate MMB
+        rot_mmb = self.rotatePolygon(res_mmb, sigma)
+        
+        return rot_mmb
