@@ -10,12 +10,13 @@ class Draw(QWidget):
         self.__points = []
         self.__DT = []
         
+        '''
         self.__points.append(QPoint3DF(0,0,0))
         self.__points.append(QPoint3DF(100,0,0))
         self.__points.append(QPoint3DF(0,100,0))
         self.__points.append(QPoint3DF(100,100,0))
         self.__points.append(QPoint3DF(50,50,0))
-        
+        '''
         
     def mousePressEvent(self, e):
         #Get cursor coordinates 
