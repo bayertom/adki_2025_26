@@ -8,7 +8,7 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from draw import Draw
-from algorithms import *
+from algorithms import * 
 
 
 class Ui_MainWindow(object):
@@ -135,29 +135,63 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionParameters)
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionExit)
+        
+        #Connects
+        self.actionCreate_DT.triggered.connect(self.createDTClick)
+        self.actionCreateContouLines.triggered.connect(self.createContourLinesClick)
 
         self.retranslateUi(MainWindow)
+        
 
-        #User defined function
-        self.actionCreate_DT.triggered.connect(self.createDTClick) 
-
-
+    #User defined function
     def createDTClick(self):
-      
-        #Get input data
+        #Create DT
+        
+        #Get points
         points = self.Canvas.getPoints()
-      
-        #Run DT
+        
+        #Create new object
         a = Algorithms()
+        
+        #Process data> create DT
         dt = a.createDT(points)
-      
+        
         #Set results
         self.Canvas.setDT(dt)
-      
+        
         #Repaint
         self.Canvas.repaint()
         
-      
+        
+    def createContourLinesClick(self):
+        #Create contour lines
+        DT = self.Canvas.getDT()
+        
+        #We need to create DT
+        if len(DT) <3:
+            
+            #Generate DT
+            self.createDTClick()
+            
+            #Get DT
+            DT = self.Canvas.getDT()
+        
+        #Input data
+        z_min = 200
+        z_max = 600
+        dz = 20
+
+        #Create contour lines
+        a = Algorithms()
+        contours = a.createContourLines(DT,z_min,z_max, dz)
+
+        #Set results
+        self.Canvas.setContours(contours)
+        
+        #Repaint
+        self.Canvas.repaint()
+        
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "DTM Analysis"))
@@ -187,7 +221,6 @@ class Ui_MainWindow(object):
         self.actionClear_all.setText(_translate("MainWindow", "Clear all"))
         self.actionParameters.setText(_translate("MainWindow", "Parameters"))
 from draw import Draw
-
 
 if __name__ == "__main__":
     import sys

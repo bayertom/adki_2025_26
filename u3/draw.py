@@ -2,29 +2,29 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from qpoint3df import *
+from random import *
 
 class Draw(QWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.__points = []
+        self.__points =[]
         self.__DT = []
+        self.__contours = []
         
-        '''
-        self.__points.append(QPoint3DF(0,0,0))
-        self.__points.append(QPoint3DF(100,0,0))
-        self.__points.append(QPoint3DF(0,100,0))
-        self.__points.append(QPoint3DF(100,100,0))
-        self.__points.append(QPoint3DF(50,50,0))
-        '''
         
     def mousePressEvent(self, e):
         #Get cursor coordinates 
         x = e.position().x()
         y = e.position().y()
         
+        #Get random z
+        z_min = 200
+        z_max = 600
+        z = random() * (z_max - z_min) + z_min
+
         #Create new point
-        p = QPoint3DF(x, y, 0)
+        p = QPoint3DF(x, y, z)
         
         #Add P to polygon
         self.__points.append(p)
@@ -40,31 +40,60 @@ class Draw(QWidget):
         #Start draw
         qp.begin(self)
         
+        #Create new pen
         pen = QPen()
-
-        #Set attributes, lines
+        
+        #Set properties, edges
         pen.setColor(Qt.GlobalColor.green)
         qp.setPen(pen)
-
-        #Draw lines
+        
+        #Draw edges
         for e in self.__DT:
             qp.drawLine(e.getStart(), e.getEnd())
-        
-        #Set attributes, points
-        pen.setColor(Qt.GlobalColor.black)
-        pen.setWidth(10)
+            
+        #Set properties, contours
+        pen.setColor(Qt.GlobalColor.gray)
         qp.setPen(pen)
         
+        #Draw contour lines
+        for c in self.__contours:
+            qp.drawLine(c.getStart(), c.getEnd())
+        
+        #Set properties, points
+        pen.setWidth(15)
+        pen.setColor(Qt.GlobalColor.black)
+        qp.setPen(pen)
+   
         #Draw points
         qp.drawPoints(self.__points)
         
         #End draw
         qp.end()
         
-
+        
     def setDT(self, DT):
+        #Set DT
         self.__DT = DT
         
     
+    def getDT(self):
+        return self.__DT
+    
+
     def getPoints(self):
+        #Get points
         return self.__points
+    
+    
+    def clearResult(self):
+        #Clear results of analyses
+        self.__DT.clear()
+           
+        #Repaint screen
+        self.repaint()
+        
+        
+    def setContours(self, contours):
+        #Set contour lines
+        self.__contours = contours
+        
