@@ -3,6 +3,7 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from qpoint3df import *
 from random import *
+from math import *
 
 class Draw(QWidget):
 
@@ -11,6 +12,11 @@ class Draw(QWidget):
         self.__points =[]
         self.__DT = []
         self.__contours = []
+        self.__slope = []
+        self.__view_DT = True
+        self.__view_Slope = True
+        self.__view_Aspect = True
+        self.__view_Contours = True
         
         
     def mousePressEvent(self, e):
@@ -43,22 +49,51 @@ class Draw(QWidget):
         #Create new pen
         pen = QPen()
         
-        #Set properties, edges
-        pen.setColor(Qt.GlobalColor.green)
-        qp.setPen(pen)
-        
-        #Draw edges
-        for e in self.__DT:
-            qp.drawLine(e.getStart(), e.getEnd())
+        if self.__view_Slope:
+            #Set properties, triangles, slope
+            pen.setColor(Qt.GlobalColor.black)
+            qp.setPen(pen)
+
+            #Process all triangles
+            for triangle in self.__slope:
+                
+                #Get polygon
+                pol = triangle.getPolygon()
+
+                #Get slope
+                slope = triangle.getSlope()
+
+                #Rescale aspect to 0-255
+                k = (2*255) / pi
+                gray = int(255 - (slope * k))
+
+                #Create Qt Color
+                color = QColor(gray, gray, gray)
+
+                #Assign brush color
+                qp.setBrush(color)
+
+                #Draw polygon
+                qp.drawPolygon(pol)
             
-        #Set properties, contours
-        pen.setColor(Qt.GlobalColor.gray)
-        qp.setPen(pen)
-        
-        #Draw contour lines
-        for c in self.__contours:
-            qp.drawLine(c.getStart(), c.getEnd())
-        
+        if self.__view_DT:
+            #Set properties, edges
+            pen.setColor(Qt.GlobalColor.green)
+            qp.setPen(pen)
+            
+            #Draw edges
+            for e in self.__DT:
+                qp.drawLine(e.getStart(), e.getEnd())
+
+        if self.__view_Contours:        
+            #Set properties, contours
+            pen.setColor(QColor(85, 38, 0)) #Chocolate brown color
+            qp.setPen(pen)
+            
+            #Draw contour lines
+            for c in self.__contours:
+                qp.drawLine(c.getStart(), c.getEnd())
+            
         #Set properties, points
         pen.setWidth(15)
         pen.setColor(Qt.GlobalColor.black)
@@ -96,4 +131,28 @@ class Draw(QWidget):
     def setContours(self, contours):
         #Set contour lines
         self.__contours = contours
+    
+
+    def setSlope(self, slope):
+        #Set slope
+        self.__slope = slope
+    
+    
+    def setViewDT(self, view):
+        #Set view DT
+        self.__view_DT = view
         
+
+    def setViewSlope(self, view):
+        #Set view Slope
+        self.__view_Slope = view
+        
+
+    def setViewAspect(self, view):
+        #Set view Aspect
+        self.__view_Aspect = view
+        
+        
+    def setViewContours(self, view):
+        #Set view contours
+        self.__view_Contours = view

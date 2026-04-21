@@ -236,8 +236,25 @@ class Algorithms:
         a = self.getContourPoint(p1, p2, z)
         b = self.getContourPoint(p2, p3, z)
 
-        return acos(nz / norm)
+        contour_lines.append(Edge(a, b))
+
     
+    
+    def getSlope(self, p1:QPoint3DF, p2:QPoint3DF, p3:QPoint3DF):
+        #Compute triangle slope
+        ux, uy, uz = p3.x() - p2.x(), p3.y() - p2.y(), p3.z() - p2.z()
+        vx, vy, vz = p1.x() - p2.x(), p1.y() - p2.y(), p1.z() - p2.z()
+        
+        #Normal vector - Vector (cross) product
+        nx = uy*vz - uz*vy
+        ny = -(ux*vz - uz*vx)
+        nz = ux*vy - uy*vx
+        
+        #Norm
+        n = sqrt(nx**2 + ny**2 + nz**2)
+        
+        return acos(nz/n)
+        
         
     def analyzeDTMSlope(self, DT):
         #Compute slope for DTM
@@ -259,8 +276,11 @@ class Algorithms:
             
             #Create new triangle
             triangle = Triangle(p1, p2, p3)
+            
+            #Set slope
+            triangle.setSlope(slope)
 
             #Add to list the list
-            triangles.append(triangle.setSlope(slope))
+            triangles.append(triangle)
 
         return triangles

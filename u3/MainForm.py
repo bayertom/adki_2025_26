@@ -75,15 +75,19 @@ class Ui_MainWindow(object):
         self.actionAnalyzeExposition.setObjectName("actionAnalyzeExposition")
         self.actionDT = QtGui.QAction(parent=MainWindow)
         self.actionDT.setCheckable(True)
+        self.actionDT.setChecked(True)
         self.actionDT.setObjectName("actionDT")
         self.actionContour_lines_2 = QtGui.QAction(parent=MainWindow)
         self.actionContour_lines_2.setCheckable(True)
+        self.actionContour_lines_2.setChecked(True)
         self.actionContour_lines_2.setObjectName("actionContour_lines_2")
         self.actionSlope = QtGui.QAction(parent=MainWindow)
         self.actionSlope.setCheckable(True)
+        self.actionSlope.setChecked(True)
         self.actionSlope.setObjectName("actionSlope")
         self.actionExposition = QtGui.QAction(parent=MainWindow)
         self.actionExposition.setCheckable(True)
+        self.actionExposition.setChecked(True)
         self.actionExposition.setObjectName("actionExposition")
         self.actionClear_results = QtGui.QAction(parent=MainWindow)
         icon6 = QtGui.QIcon()
@@ -139,6 +143,11 @@ class Ui_MainWindow(object):
         #Connects
         self.actionCreate_DT.triggered.connect(self.createDTClick)
         self.actionCreateContouLines.triggered.connect(self.createContourLinesClick)
+        self.actionAnalyzeSlope.triggered.connect(self.analyzeSlopeClick)
+        self.actionDT.triggered.connect(self.viewDTClick)
+        self.actionContour_lines_2.triggered.connect(self.viewContoursClick)
+        self.actionSlope.triggered.connect(self.viewSlopeClick)
+        self.actionExposition.triggered.connect(self.viewAspectClick)
 
         self.retranslateUi(MainWindow)
         
@@ -190,7 +199,75 @@ class Ui_MainWindow(object):
         
         #Repaint
         self.Canvas.repaint()
+
+
+    def analyzeSlopeClick(self):
+        #Analyze DTM slope
+        DT = self.Canvas.getDT()
         
+        #We need to create DT
+        if len(DT) <3:
+            
+            #Generate DT
+            self.createDTClick()
+            
+            #Get DT
+            DT = self.Canvas.getDT()
+        
+        #Analyze slope
+        a = Algorithms()
+        triangles = a.analyzeDTMSlope(DT)
+        
+        #Set results
+        self.Canvas.setSlope(triangles)
+        
+        #Repaint
+        self.Canvas.repaint()
+        
+        
+    def viewDTClick(self):
+        #Is menu item checked
+        view = self.actionDT.isChecked()
+        
+        #Set status
+        self.Canvas.setViewDT(view)
+
+        #Repaint
+        self.Canvas.repaint()
+
+
+    def viewContoursClick(self):
+        #Is menu item checked
+        view = self.actionContour_lines_2.isChecked()
+        
+        #Set status
+        self.Canvas.setViewContours(view)
+
+        #Repaint
+        self.Canvas.repaint()
+
+
+    def viewSlopeClick(self):
+        #Is menu item checked
+        view = self.actionSlope.isChecked()
+        
+        #Set status
+        self.Canvas.setViewSlope(view)
+
+        #Repaint
+        self.Canvas.repaint()      
+
+    
+    def viewAspectClick(self):
+        #Is menu item checked
+        view = self.actionExposition.isChecked()
+        
+        #Set status
+        self.Canvas.setViewAspect(view)
+
+        #Repaint
+        self.Canvas.repaint()      
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
