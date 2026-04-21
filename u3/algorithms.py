@@ -62,7 +62,7 @@ class Algorithms:
         return p_nearest
     
     
-    def get2LinesAngle(self, p1:QPointF, p2:QPointF, p3:QPointF, p4:QPointF):
+    def get2LinesAngle(self, p1:QPoint3DF, p2:QPoint3DF, p3:QPoint3DF, p4:QPoint3DF):
         #Angle between two lines
         ux = p2.x() - p1.x()    
         uy = p2.y() - p1.y()
@@ -84,7 +84,7 @@ class Algorithms:
         return acos(arg)
     
     
-    def findDelaunayPoint(self, p1, p2, points):
+    def findDelaunayPoint(self, p1:QPoint3DF, p2:QPoint3DF, points):
         #Find Delaunay point to the edge
         p_dt = None
         phi_max = 0
@@ -106,6 +106,7 @@ class Algorithms:
                         phi_max = phi
                         p_dt = p_i
         return p_dt
+                    
                     
     def createDT(self, points):
         #Create Delaunay triangulation                 
@@ -239,13 +240,12 @@ class Algorithms:
         contour_lines.append(Edge(a, b))
 
     
-    
     def getSlope(self, p1:QPoint3DF, p2:QPoint3DF, p3:QPoint3DF):
         #Compute triangle slope
         ux, uy, uz = p3.x() - p2.x(), p3.y() - p2.y(), p3.z() - p2.z()
         vx, vy, vz = p1.x() - p2.x(), p1.y() - p2.y(), p1.z() - p2.z()
         
-        #Normal vector - Vector (cross) product
+        #Normal vector - vector cross product
         nx = uy*vz - uz*vy
         ny = -(ux*vz - uz*vx)
         nz = ux*vy - uy*vx
@@ -254,10 +254,10 @@ class Algorithms:
         n = sqrt(nx**2 + ny**2 + nz**2)
         
         return acos(nz/n)
-        
-        
-    def analyzeDTMSlope(self, DT):
-        #Compute slope for DTM
+    
+    
+    def toTriangles(self, DT):
+        #Convert edge model to triangle model
         n = len(DT)
 
         #Create list of triangles
@@ -271,16 +271,21 @@ class Algorithms:
             p2 = DT[i].getEnd()
             p3 = DT[i + 1].getEnd()
             
-            #Compute slope
-            slope = self.getSlope(p1, p2, p3)
-            
             #Create new triangle
             triangle = Triangle(p1, p2, p3)
+
+            #Add triangle to the list
+            triangles.append(triangle)
+            
+        return triangles
+    
+    
+    def analyzeDTMSlope(self, triangles):
+        #Compute slope for DTM
+        for t in triangles:
+
+            #Compute slope
+            slope = self.getSlope(t.getP1(), t.getP2(), t.getP3())
             
             #Set slope
-            triangle.setSlope(slope)
-
-            #Add to list the list
-            triangles.append(triangle)
-
-        return triangles
+            t.setSlope(slope)

@@ -12,7 +12,7 @@ class Draw(QWidget):
         self.__points =[]
         self.__DT = []
         self.__contours = []
-        self.__slope = []
+        self.__triangles = []
         self.__view_DT = True
         self.__view_Slope = True
         self.__view_Aspect = True
@@ -49,17 +49,15 @@ class Draw(QWidget):
         #Create new pen
         pen = QPen()
         
+        #Draw slope
         if self.__view_Slope:
             #Set properties, triangles, slope
             pen.setColor(Qt.GlobalColor.black)
             qp.setPen(pen)
 
             #Process all triangles
-            for triangle in self.__slope:
+            for triangle in self.__triangles:
                 
-                #Get polygon
-                pol = triangle.getPolygon()
-
                 #Get slope
                 slope = triangle.getSlope()
 
@@ -74,8 +72,11 @@ class Draw(QWidget):
                 qp.setBrush(color)
 
                 #Draw polygon
+                pol = QPolygonF([triangle.getP1(), triangle.getP2(), triangle.getP3()])
+                
                 qp.drawPolygon(pol)
             
+        #Draw DT
         if self.__view_DT:
             #Set properties, edges
             pen.setColor(Qt.GlobalColor.green)
@@ -85,6 +86,7 @@ class Draw(QWidget):
             for e in self.__DT:
                 qp.drawLine(e.getStart(), e.getEnd())
 
+        #Draw contour lines
         if self.__view_Contours:        
             #Set properties, contours
             pen.setColor(QColor(85, 38, 0)) #Chocolate brown color
@@ -104,17 +106,17 @@ class Draw(QWidget):
         
         #End draw
         qp.end()
+    
         
+    def getDT(self):
+        return self.__DT
+    
         
     def setDT(self, DT):
         #Set DT
         self.__DT = DT
         
-    
-    def getDT(self):
-        return self.__DT
-    
-
+        
     def getPoints(self):
         #Get points
         return self.__points
@@ -132,10 +134,15 @@ class Draw(QWidget):
         #Set contour lines
         self.__contours = contours
     
+    
+    def getTriangles(self):
+        #Get triangles
+        return self.__triangles
+    
 
-    def setSlope(self, slope):
-        #Set slope
-        self.__slope = slope
+    def setTriangles(self, triangles):
+        #Set triangles
+        self.__triangles = triangles
     
     
     def setViewDT(self, view):

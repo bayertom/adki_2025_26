@@ -4,18 +4,27 @@ from PyQt6.QtWidgets import *
 from qpoint3df import *
 
 class Triangle:
-    def __init__(self, p1, p2, p3):
-        self.__pol = QPolygonF()
+    def __init__(self, p1:QPoint3DF, p2:QPoint3DF, p3:QPoint3DF):
+        
         self.__aspect = 0
         self.__slope = 0
 
-        self.__pol.append(p1)
-        self.__pol.append(p2)
-        self.__pol.append(p3)
-       
-        
-    def getPolygon(self):
-        return self.__pol
+        #Add points
+        self.__p1 = p1
+        self.__p2 = p2
+        self.__p3 = p3
+    
+    
+    def getP1(self):
+        return self.__p1
+    
+    
+    def getP2(self):
+        return self.__p2
+    
+    
+    def getP3(self):
+        return self.__p3
     
     
     def getAspect(self):

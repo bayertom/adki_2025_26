@@ -214,12 +214,26 @@ class Ui_MainWindow(object):
             #Get DT
             DT = self.Canvas.getDT()
         
-        #Analyze slope
+        #Ceate new object
         a = Algorithms()
-        triangles = a.analyzeDTMSlope(DT)
+        
+        #Convert to triangles
+        triangles = self.Canvas.getTriangles()
+        
+        #Did we convert DTM to triangles
+        if len(triangles) == 0:
+            
+            #Convert DTM to triangles
+            triangles = a.toTriangles(DT)   
+            
+            #Set triangles
+            self.Canvas.setTriangles(triangles)
+             
+        #Analyze slope
+        a.analyzeDTMSlope(triangles)
         
         #Set results
-        self.Canvas.setSlope(triangles)
+        self.Canvas.setTriangles(triangles)
         
         #Repaint
         self.Canvas.repaint()
