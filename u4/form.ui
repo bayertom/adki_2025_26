@@ -3,7 +3,11 @@
  <class>MainForm</class>
  <widget class="QMainWindow" name="MainForm">
   <property name="windowModality">
+<<<<<<< HEAD
    <enum>Qt::NonModal</enum>
+=======
+   <enum>Qt::WindowModality::ApplicationModal</enum>
+>>>>>>> 913e0fba9add5ddd7200a885975a0be8f3b99e9c
   </property>
   <property name="geometry">
    <rect>
@@ -29,7 +33,11 @@
      <x>0</x>
      <y>0</y>
      <width>964</width>
+<<<<<<< HEAD
      <height>22</height>
+=======
+     <height>33</height>
+>>>>>>> 913e0fba9add5ddd7200a885975a0be8f3b99e9c
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
