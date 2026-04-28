@@ -60,18 +60,42 @@ class Algorithms():
             self.dp(pol, pol_simp, h, i_max, e)
 
 
-def douglasPeucker(self, pol, h):
-    #Apply Douglas Peucker algorithm
-    s = 0
-    e = len(pol)
-    
-    #Append start point
-    pol_simp = [pol[s]]
+    def simplifyDouglasPeucker(self, pol, h):
+        #Apply Douglas Peucker algorithm
+        s = 0
+        e = len(pol)
+        
+        #Append start point
+        pol_simp = [pol[s]]
 
-    #Recursive processing
-    self.dp(pol, pol_simp, h, s, e)
+        #Recursive processing
+        self.dp(pol, pol_simp, h, s, e)
 
-    #Append end point
-    pol_simp.append(pol[e])
-            
-    return pol_simp
+        #Append end point
+        pol_simp.append(pol[e])
+                
+        return pol_simp
+
+
+    def simplifyEuclideanDistance(self, pol, d_min):
+        #Simplify polyline using Euclidean distance
+        n = len(pol)
+        pol_simp = []
+        used = [True] * n
+        
+        #Process all points
+        for i in range(0, n-2):
+            #Starting point is pivot
+            j = i
+            while True:
+                #Compute distance to the next point
+                d = sqrt((pol[i].x()-pol[j+1].x())**2 + (pol[i].y()-pol[j+1].y())**2)
+                
+                #If smaller than tollerance, simplify
+                if d < d_min:
+                    used[j] = False
+                    j = j+1
+
+                #First larger distance we continue
+                else:
+                    break
