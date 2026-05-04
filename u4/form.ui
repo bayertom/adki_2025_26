@@ -3,11 +3,7 @@
  <class>MainForm</class>
  <widget class="QMainWindow" name="MainForm">
   <property name="windowModality">
-<<<<<<< HEAD
    <enum>Qt::NonModal</enum>
-=======
-   <enum>Qt::WindowModality::ApplicationModal</enum>
->>>>>>> 913e0fba9add5ddd7200a885975a0be8f3b99e9c
   </property>
   <property name="geometry">
    <rect>
@@ -33,11 +29,7 @@
      <x>0</x>
      <y>0</y>
      <width>964</width>
-<<<<<<< HEAD
-     <height>22</height>
-=======
-     <height>33</height>
->>>>>>> 913e0fba9add5ddd7200a885975a0be8f3b99e9c
+     <height>31</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -99,8 +91,13 @@
    <addaction name="separator"/>
    <addaction name="actionClear_results"/>
    <addaction name="actionClear_All"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/open_file.png</normaloff>:/images/images/icons/open_file.png</iconset>
+   </property>
    <property name="text">
     <string>Open</string>
    </property>
@@ -109,6 +106,10 @@
    </property>
   </action>
   <action name="actionExit">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/exit.png</normaloff>:/images/images/icons/exit.png</iconset>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>
@@ -117,6 +118,10 @@
    </property>
   </action>
   <action name="actionEuclidean_distance">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/eucl_distance.png</normaloff>:/images/images/icons/eucl_distance.png</iconset>
+   </property>
    <property name="text">
     <string>Euclidean distance</string>
    </property>
@@ -125,6 +130,10 @@
    </property>
   </action>
   <action name="actionReumann_Witkam">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/witkamm.png</normaloff>:/images/images/icons/witkamm.png</iconset>
+   </property>
    <property name="text">
     <string>Reumann-Witkam</string>
    </property>
@@ -133,6 +142,10 @@
    </property>
   </action>
   <action name="actionDouglas_Peucker">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/douglas_peucker.png</normaloff>:/images/images/icons/douglas_peucker.png</iconset>
+   </property>
    <property name="text">
     <string>Douglas-Peucker</string>
    </property>
@@ -141,6 +154,10 @@
    </property>
   </action>
   <action name="actionWhyatt">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/whyatt.png</normaloff>:/images/images/icons/whyatt.png</iconset>
+   </property>
    <property name="text">
     <string>Whyatt</string>
    </property>
@@ -149,6 +166,10 @@
    </property>
   </action>
   <action name="actionArrea_displacement">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/area_displ.png</normaloff>:/images/images/icons/area_displ.png</iconset>
+   </property>
    <property name="text">
     <string>Area displacement</string>
    </property>
@@ -157,6 +178,10 @@
    </property>
   </action>
   <action name="actionLLR">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/llr.png</normaloff>:/images/images/icons/llr.png</iconset>
+   </property>
    <property name="text">
     <string>LLR</string>
    </property>
@@ -165,11 +190,19 @@
    </property>
   </action>
   <action name="actionClear_results">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/clear.png</normaloff>:/images/images/icons/clear.png</iconset>
+   </property>
    <property name="text">
     <string>Clear results</string>
    </property>
   </action>
   <action name="actionClear_All">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/images/images/icons/clear_all.png</normaloff>:/images/images/icons/clear_all.png</iconset>
+   </property>
    <property name="text">
     <string>Clear All</string>
    </property>
@@ -183,6 +216,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
