@@ -3,8 +3,7 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from math import *
 
-class Algorithms():   
-     
+class Algorithms():    
     def getPolygonArea(self, pol: QPolygonF):
         #Calculate polygon area  using LH formula
         #Return signed area
@@ -61,8 +60,6 @@ class Algorithms():
 
     def simplifyDouglasPeucker(self, pol, h):
         #Apply Douglas Peucker algorithm
-        
-        #Not enough points
         if len(pol) <=2:
             return pol
         
@@ -82,14 +79,61 @@ class Algorithms():
         return pol_simp
 
 
-    def simplifyEuclideanDistance(self, pol, d_min):
+    def simplifyEuclideanDistanceV1(self, pol, d_min):
         #Simplify polyline using Euclidean distance
         #Remove points closer than d_min
         n = len(pol)
-
-        #Not enough points
-        if n <= 2:
+        if n <=2:
             return pol
+        
+        #Simplified polyline
+        pol_simp = []
+        
+        #Flag, all points are used
+        used = [True] * n
+        
+        #Process all points closer than d_min
+        while i < n - 1:
+            
+            #Assign next point
+            j = i + 1
+            
+            #Repeat until last point is found
+            while j < n:
+                #Compute distance to the next point
+                d = sqrt((pol[i].x()- pol[j].x())**2 + (pol[i].y() - pol[j].y())**2)
+                
+                #If d smaller than tollerance, throw point
+                if d < d_min:
+                    
+                    #Point will not be used
+                    used[j] = False
+                    
+                    #Increment j
+                    j = j + 1
+
+                #First larger distance,  we continue
+                else:
+                    break
+                
+            #Update j
+            i = j
+            
+        #Create output points
+        for i in range(n):
+            if used[i]:
+               pol_simp.append(pol[i])
+               
+        return pol_simp 
+    
+    
+    def simplifyEuclideanDistanceV2(self, pol, d_min):
+        #Simplify polyline using Euclidean distance
+        #Remove points closer than d_min
+        #Simplified version
+        n = len(pol)
+        if n <= 2:
+            return pol[:]
         
         #Always store the first point
         pol_simp = [pol[0]]
@@ -117,7 +161,7 @@ class Algorithms():
         return pol_simp
     
     
-    def getArea3P(self, p1, p2, p3):
+    def getArea(self, p1, p2, p3):
         #Get area of triangle given by 3 points
         return (p1.x()*(p2.y()-p3.y()) + p2.x()*(p3.y()-p1.y()) + p3.x()*(p1.y()-p2.y())) / 2
 
@@ -126,17 +170,13 @@ class Algorithms():
         #Simplify polyline using Whyatt algorithm
         #Initialize with the whole polyline
         pol_simp = pol
-
-        #Not enough points
-        if len(pol) <= 2:
-            return pol   
         
         #Initialize i
         i = 1
 
         while i < len(pol_simp) - 1:
             #Compute area of the triangle
-            area = self.getArea3P(pol_simp[i-1], pol_simp[i], pol_simp[i+1])
+            area = self.getArea(pol_simp[i-1], pol_simp[i], pol_simp[i+1])
             
             #Check area and remove point
             if area < area_min:
