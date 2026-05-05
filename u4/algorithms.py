@@ -19,7 +19,7 @@ class Algorithms():
 
     def getPointLineDistance(self, p: QPointF, p1: QPointF, p2: QPointF):
         #Distance of the point from the line
-        numerator = p.x()*(p1.y()-p2.y()) + p.x1()*(p2.y()-p.y()) + p2.x()*(p.y()-p1.y())
+        numerator = p.x()*(p1.y()-p2.y()) + p1.x()*(p2.y()-p.y()) + p2.x()*(p.y()-p1.y())
         denominator = sqrt((p2.x()-p1.x())**2 + (p2.y()-p1.y())**2)
 
         return abs(numerator/denominator)
@@ -159,3 +159,33 @@ class Algorithms():
             pol_simp.append(pol[-1])
                 
         return pol_simp
+    
+    
+    def getArea(self, p1, p2, p3):
+        #Get area of triangle given by 3 points
+        return (p1.x()*(p2.y()-p3.y()) + p2.x()*(p3.y()-p1.y()) + p3.x()*(p1.y()-p2.y())) / 2
+
+
+    def simplifyWhyatt(self, pol, area_min):
+        #Simplify polyline using Whyatt algorithm
+        #Initialize with the whole polyline
+        pol_simp = pol
+        
+        #Initialize i
+        i = 1
+
+        while i < len(pol_simp) - 1:
+            #Compute area of the triangle
+            area = self.getArea(pol_simp[i-1], pol_simp[i], pol_simp[i+1])
+            
+            #Check area and remove point
+            if area < area_min:
+                pol_simp.pop(i)
+                
+            #Increment index
+            else:
+                i = i + 1
+
+        #Return simplified polyline
+        return pol_simp
+            

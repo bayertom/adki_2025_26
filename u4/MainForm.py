@@ -7,6 +7,7 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+from algorithms import *
 
 
 class Ui_MainForm(object):
@@ -118,9 +119,32 @@ class Ui_MainForm(object):
         self.toolBar.addAction(self.actionClear_results)
         self.toolBar.addAction(self.actionClear_All)
         self.toolBar.addSeparator()
+        
+        #User-defined connections
+        self.actionDouglas_Peucker.triggered.connect(self.simplifyDouglasPeuckerClick)
 
         self.retranslateUi(MainForm)
         QtCore.QMetaObject.connectSlotsByName(MainForm)
+        
+        
+    #User defined functions
+    def simplifyDouglasPeuckerClick(self):
+        
+        #Get source polyline
+        polyline = self.Canvas.getPolyline()
+
+        #Create algorithms instance
+        a = Algorithms()
+        
+        #Call D-P
+        polyline_simp = a.simplifyDouglasPeucker(polyline, 30)
+
+        #Set results
+        self.Canvas.setPolylineSimp(polyline_simp)
+        
+        #Repaint
+        self.Canvas.repaint()
+        
 
     def retranslateUi(self, MainForm):
         _translate = QtCore.QCoreApplication.translate

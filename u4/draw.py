@@ -6,9 +6,8 @@ class Draw(QWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.__pol = QPolygonF()
-        self.__q = QPointF(-100, -100)
-        self.__add_vertex = False
+        self.__polyline = []
+        self.__polyline_simp = []
        
         
     def mousePressEvent(self, e):
@@ -16,19 +15,12 @@ class Draw(QWidget):
         x = e.position().x()
         y = e.position().y()
         
-        #Add new vertex to polygon
-        if self.__add_vertex:
-            #Create new point
-            p = QPointF(x,y)
+        #Create new point
+        p = QPointF(x,y)
             
-            #Add point to polygon
-            self.__pol.append(p)
-            
-        #Change q position
-        else:
-            self.__q.setX(x)
-            self.__q.setY(y)
-            
+        #Add point to polygon
+        self.__polyline.append(p)      
+      
         #Repaint screen
         self.repaint()
 
@@ -42,20 +34,17 @@ class Draw(QWidget):
         #Start draw
         qp.begin(self)
         
-        #Graphic attributes, polygon
-        qp.setPen(Qt.GlobalColor.red)
-        qp.setBrush(Qt.GlobalColor.yellow)
-        
-        #Draw polygon
-        qp.drawPolygon(self.__pol)
-        
-        #Graphic attributes, point
+        #Graphic attributes, source polyline 
         qp.setPen(Qt.GlobalColor.black)
-        qp.setBrush(Qt.GlobalColor.white)
         
-        #Point radius
-        r = 5
-        qp.drawEllipse(int(self.__q.x() -r), int(self.__q.y() - r), 2*r, 2*r )
+        #Draw source polyline
+        qp.drawPolyline(self.__polyline)
+        
+        #Graphic attributes, simplified polyline
+        qp.setPen(Qt.GlobalColor.red)
+        
+        #Draw simplified polyline
+        qp.drawPolyline(self.__polyline_simp)
         
         #End draw
         qp.end()
@@ -68,15 +57,18 @@ class Draw(QWidget):
         
     def clearCanvas(self):
         #Clears the canvas
-        self.__pol.clear()
+        self.__polyline.clear()
+        self.__polyline_simp.clear()
 
         self.repaint()
-        
-    def getPoint(self):
-        #Get analyzed point
-        return self.__q
+
     
-    def getPolygon(self):
-        #Get polygon 
-        return self.__pol
+    def getPolyline(self):
+        #Get polyline
+        return self.__polyline
+    
+
+    def setPolylineSimp(self, polyline_simp):
+        #Set polyline
+        self.__polyline_simp = polyline_simp
     
