@@ -50,11 +50,6 @@ class Draw(QWidget):
         qp.end()
         
         
-    def changeStatus(self):
-        #Change status: draw point / polygon
-        self.__add_vertex = not(self.__add_vertex)
-        
-        
     def clearCanvas(self):
         #Clears the canvas
         self.__polyline.clear()
@@ -69,6 +64,6 @@ class Draw(QWidget):
     
 
     def setPolylineSimp(self, polyline_simp):
-        #Set polyline
+        #Set simplified polyline
         self.__polyline_simp = polyline_simp
     
