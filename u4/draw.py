@@ -6,8 +6,9 @@ class Draw(QWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.__polyline = []
+        #self.__polyline = []
         self.__polyline_simp = []
+        self.__polyline = self.createTestPoints()
        
         
     def mousePressEvent(self, e):
@@ -66,4 +67,20 @@ class Draw(QWidget):
     def setPolylineSimp(self, polyline_simp):
         #Set simplified polyline
         self.__polyline_simp = polyline_simp
+
     
+    def getPolylineSimp(self):
+        #Set simplified polyline
+        return self.__polyline_simp
+    
+
+    def createTestPoints(self):
+
+        points = []
+        xy_coor = [(0, 0), (0, 1), (1, 0), (2, -1), (2, 0)]
+
+        for p in xy_coor:
+            points.append(QPointF(200 + p[0]*100, 200 + p[1]*100))
+
+        return QPolygonF(points)
+     

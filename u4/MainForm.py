@@ -122,6 +122,10 @@ class Ui_MainForm(object):
         
         #User-defined connections
         self.actionDouglas_Peucker.triggered.connect(self.simplifyDouglasPeuckerClick)
+        self.actionEuclidean_distance.triggered.connect(self.simplifyEuclideanDistanceClick)
+        self.actionWhyatt.triggered.connect(self.simplifyWhyattClick)
+        self.actionLLR.triggered.connect(self.LLRClick)
+        self.actionArrea_displacement.triggered.connect(self.AreaDisplacementClick)
 
         self.retranslateUi(MainForm)
         QtCore.QMetaObject.connectSlotsByName(MainForm)
@@ -145,6 +149,79 @@ class Ui_MainForm(object):
         #Repaint
         self.Canvas.repaint()
         
+        
+    def simplifyEuclideanDistanceClick(self):
+        #Get source polyline
+        polyline = self.Canvas.getPolyline()
+
+        #Create algorithms instance
+        a = Algorithms()
+        
+        #Call euclidean distance
+        polyline_simp = a.simplifyEuclideanDistance(polyline, 100)
+
+        #Set results
+        self.Canvas.setPolylineSimp(polyline_simp)
+        
+        #Repaint
+        self.Canvas.repaint()
+
+
+    def simplifyWhyattClick(self):
+        #Get source polyline
+        polyline = self.Canvas.getPolyline()
+
+        #Create algorithms instance
+        a = Algorithms()
+        
+        #Call euclidean distance
+        polyline_simp = a.simplifyWhyatt(polyline, 30)
+
+        #Set results
+        self.Canvas.setPolylineSimp(polyline_simp)
+        
+        #Repaint
+        self.Canvas.repaint()
+
+
+    def LLRClick(self):
+        #Get source polyline simp
+        polyline_simp = self.Canvas.getPolylineSimp()
+
+        #Create algorithms instance
+        a = Algorithms()
+        
+        #Compute LLR
+        llr_result = a.computeLLR(polyline_simp)
+
+        #Create messagebox
+        qmb = QMessageBox()
+        qmb.setWindowTitle("LLR criterion")
+        qmb.setText(str(llr_result))
+        
+        #Show LLR
+        qmb.exec()
+
+
+    def AreaDisplacementClick(self):
+        #Get source polyline and polyline simp
+        polyline = self.Canvas.getPolyline()
+        polyline_simp = self.Canvas.getPolylineSimp()
+
+        #Create algorithms instance
+        a = Algorithms()
+        
+        #Call Area displacement
+        ad_result = a.computeAreaDisplacement(polyline_simp, polyline)
+
+        #Create messagebox
+        qmb = QMessageBox()
+        qmb.setWindowTitle("Area displacement criterion")
+        qmb.setText(str(ad_result))
+        
+        #Show Area displacement
+        qmb.exec()
+
 
     def retranslateUi(self, MainForm):
         _translate = QtCore.QCoreApplication.translate

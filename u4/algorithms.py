@@ -117,15 +117,10 @@ class Algorithms():
         return pol_simp
     
     
-    def getArea3P(self, p1, p2, p3):
-        #Get area of triangle given by 3 points
-        return (p1.x()*(p2.y()-p3.y()) + p2.x()*(p3.y()-p1.y()) + p3.x()*(p1.y()-p2.y())) / 2
-
-
     def simplifyWhyatt(self, pol, area_min):
         #Simplify polyline using Whyatt algorithm
         #Initialize with the whole polyline
-        pol_simp = pol
+        pol_simp = list(pol)
 
         #Not enough points
         if len(pol) <= 2:
@@ -136,8 +131,9 @@ class Algorithms():
 
         while i < len(pol_simp) - 1:
             #Compute area of the triangle
-            area = self.getArea3P(pol_simp[i-1], pol_simp[i], pol_simp[i+1])
-            
+            triangle_points = [pol_simp[i-1], pol_simp[i], pol_simp[i+1]]
+            area = self.getPolygonArea(QPolygonF(triangle_points))
+
             #Check area and remove point
             if area < area_min:
                 pol_simp.pop(i)
@@ -148,4 +144,69 @@ class Algorithms():
 
         #Return simplified polyline
         return pol_simp
+    
+    
+    def computeEuclideanDistance(self, p1, p2):
+        #Compute euclidean distance
+        dx = p1.x() - p2.x()
+        dy = p1.y() - p2.y()
+
+        return sqrt(dx**2 + dy**2)
+        
             
+    def computeLLR(self, pol_simp):
+        #Compute local length ratio
+        llr = 0
+        n = len(pol_simp)
+
+        #Not enough points, skip
+        if n == 0:
+            return 0
+        
+        for i in range(1, n-1):
+            #Compute distances
+            d1 = self.computeEuclideanDistance(pol_simp[i-1], pol_simp[i])
+            d2 = self.computeEuclideanDistance(pol_simp[i], pol_simp[i+1])
+            d3 = self.computeEuclideanDistance(pol_simp[i-1], pol_simp[i+1])
+
+            #Compute LLR
+            llr += (d1 + d2) / d3
+        
+        #Return mean LLR value
+        return llr / (n-2)
+    
+    
+    def findPointIndex(self, p, pol, start):
+        #Find index of the point in the simplified polyline
+        i = start
+        
+        #Repeat until p = pol[i]
+        while p != pol[i]:
+            i += 1
+        
+        #Return the found index
+        return i
+        
+    
+    def computeAreaDisplacement(self, pol_simp, pol):
+        #Compute area displecement of simplified polyline
+        n = len(pol_simp)
+        displacement = 0
+        
+        #Process all segments
+        for i in range(n-1):
+            #Get start point index
+            start = self.findPointIndex(pol_simp[i], pol, i)
+            
+            #Get end point index
+            end = self.findPointIndex(pol_simp[i+1], pol, start+1)
+            
+            #Create polygon
+            seg = QPolygonF(pol[start:end+1])
+            area = self.getPolygonArea(seg)
+
+            #Update displacement
+            displacement += area
+        
+        return displacement
+
